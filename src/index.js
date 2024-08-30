@@ -1,6 +1,6 @@
-require('dotenv').config();
 
 const { Client, IntentsBitField, EmbedBuilder } = require('discord.js');
+const { discordToken } = require('../config.json');
 
 const noodlebot = new Client({
     intents: [
@@ -10,8 +10,6 @@ const noodlebot = new Client({
         IntentsBitField.Flags.MessageContent,
     ],
 });
-
-const discordToken = process.env.DISCORD_TOKEN;
 
 noodlebot.on('ready', (client) => {
     console.log(`Status: ✅ | ${client.user.tag} is online.`);
