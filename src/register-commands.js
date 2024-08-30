@@ -7,6 +7,10 @@ const commands = [
         description: 'Sends a hello message to show the bot is working.',
     },
     {
+        name: 'info',
+        description: 'Sends an embed about noodlebot.',
+    },
+    {
         name: 'add',
         description: 'Returns the sum of two numbers.',
         options: [
