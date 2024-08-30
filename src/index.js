@@ -26,14 +26,19 @@ noodlebot.on('interactionCreate', (interaction) => {
 
     if (interaction.commandName === 'info') {
         const embed = new EmbedBuilder()
-            .setTitle('info')
-            .setDescription('noodlebot is a useful Discord bot with random features.')
-            .setColor('Random')
+            .setTitle('noodlebot info')
             .addFields({
-                name: 'Field title',
-                value: 'Some value',
+                name: 'Developer',
+                value: 'noodles31',
                 inline: true,
-            });
+            })
+            .addFields({
+                name: 'Bot version',
+                value: '1.0.0',
+                inline: true,
+            })
+            .setDescription('noodlebot is a useful Discord bot with random features.')
+            .setColor('ffd166');
 
         interaction.reply({ embeds: [embed] });
     }
