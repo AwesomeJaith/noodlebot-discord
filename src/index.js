@@ -17,4 +17,12 @@ noodlebot.on("ready", (client) => {
     console.log(`Status: ✅ | ${client.user.tag} is online.`);
 });
 
+noodlebot.on('interactionCreate', (interaction) => {
+    if (!interaction.isChatInputCommand()) return;
+
+    if (interaction.commandName === 'test') {
+        interaction.reply('Hello!');
+    }
+});
+
 noodlebot.login(discordToken);
