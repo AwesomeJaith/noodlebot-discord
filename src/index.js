@@ -1,52 +1,18 @@
 
-const { Client, IntentsBitField, EmbedBuilder } = require('discord.js');
+const { Client, Events, GatewayIntentBits, EmbedBuilder } = require('discord.js');
 const { discordToken } = require('../config.json');
 
-const noodlebot = new Client({
+const client = new Client({
     intents: [
-        IntentsBitField.Flags.Guilds,
-        IntentsBitField.Flags.GuildMembers,
-        IntentsBitField.Flags.GuildMessages,
-        IntentsBitField.Flags.MessageContent,
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
     ],
 });
 
-noodlebot.on('ready', (client) => {
-    console.log(`Status: ✅ | ${client.user.tag} is online.`);
+client.once(Events.ClientReady, readyClient => {
+    console.log(`Status: ✅ | ${readyClient.user.tag} is online.`);
 });
 
-noodlebot.on('interactionCreate', (interaction) => {
-    if (!interaction.isChatInputCommand()) return;
-
-    if (interaction.commandName === 'test') {
-        interaction.reply('Hello!');
-    }
-
-    if (interaction.commandName === 'info') {
-        const embed = new EmbedBuilder()
-            .setTitle('noodlebot info')
-            .addFields({
-                name: 'Developer',
-                value: 'noodles31',
-                inline: true,
-            })
-            .addFields({
-                name: 'Bot version',
-                value: '1.0.0',
-                inline: true,
-            })
-            .setDescription('noodlebot is a useful Discord bot with random features.')
-            .setColor('ffd166');
-
-        interaction.reply({ embeds: [embed] });
-    }
-
-    if (interaction.commandName === 'add') {
-        const num1 = interaction.options.get('first-number').value;
-        const num2 = interaction.options.get('second-number').value;
-        const sum = num1 + num2;
-        interaction.reply(`The sum of ${num1} and ${num2} is ${sum}`);
-    }
-});
-
-noodlebot.login(discordToken);
+client.login(discordToken);
