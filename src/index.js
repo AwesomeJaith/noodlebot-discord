@@ -13,8 +13,6 @@ const noodlebot = new Client({
 
 const discordToken = process.env.DISCORD_TOKEN;
 
-console.log(discordToken);
-
 noodlebot.on("ready", (client) => {
     console.log(`Status: ✅ | ${client.user.tag} is online.`);
 });
