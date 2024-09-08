@@ -2,9 +2,13 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 
 const diffImage = new EmbedBuilder()
   .setColor("ffd166")
-  .setTitle("Difference")
+  .setTitle(" ")
   .setImage(
-    "https://media.discordapp.net/attachments/1278848189767614566/1279653363902054421/diff_html_v2.png?ex=66d53990&is=66d3e810&hm=792eb72e8ecb7fc7acb4fb2f0d1f042042fd15b9858280a45da25d5531ad79ed&=&format=webp&quality=lossless&width=1438&height=249"
+    "https://media.discordapp.net/attachments/1278848189767614566/1282444165342298173/image.png?ex=66df60b3&is=66de0f33&hm=f67844b7506c923682c14781cb6590a1841c3b34c10589a7832a30efb861692a&=&format=webp&quality=lossless&width=1280&height=293"
+  )
+  .addFields(
+    { name: "Before", value: "before text", inline: true },
+    { name: "After", value: "after text", inline: true }
   )
   .setTimestamp();
 
