@@ -38,9 +38,15 @@ module.exports = {
 
       const discordImageUrl = sentMessage.attachments.first().url;
 
+      const oldMessageLink = `https://discord.com/channels/${oldMessage.guild.id}/${oldMessage.channel.id}/${oldMessage.id}`;
+
       const diffEmbed = new EmbedBuilder()
+        .setAuthor({
+          name: oldMessage.author.username,
+          iconURL: oldMessage.author.displayAvatarURL(),
+        })
         .setColor("ffd166")
-        .setTitle(" ")
+        .setTitle(`Message Edited in ${oldMessageLink}`)
         .setImage(discordImageUrl)
         .addFields(
           { name: "Before", value: message1, inline: true },
@@ -51,6 +57,9 @@ module.exports = {
       const diffLogChannel =
         await newMessage.guild.channels.fetch(diffLogChannelId);
       await diffLogChannel.send({ embeds: [diffEmbed] });
+
+      const deleteUrl = `http://localhost:3000/images/${imageId}`;
+      await axios.delete(deleteUrl);
     } catch (error) {
       console.error("Error sending image or creating embed:", error);
     }
