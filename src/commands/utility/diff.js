@@ -1,4 +1,9 @@
-const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
+const {
+  SlashCommandBuilder,
+  EmbedBuilder,
+  AttachmentBuilder,
+} = require("discord.js");
+const axios = require("axios");
 
 const diffImage = new EmbedBuilder()
   .setColor("ffd166")
@@ -15,23 +20,52 @@ const diffImage = new EmbedBuilder()
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("diff")
-    .setDescription("Shows the difference between two messages."),
-  // .addStringOption((option) =>
-  //   option
-  //     .setName('message1')
-  //     .setDescription('The first message you want to compare.')
-  //     .setRequired(true)
-  // )
-  // .addStringOption((option) =>
-  //   option
-  //     .setName('message2')
-  //     .setDescription('The second message you want to compare.')
-  //     .setRequired(true)
-  // ),
+    .setDescription("Shows the difference between two messages.")
+    .addStringOption((option) =>
+      option
+        .setName("message1")
+        .setDescription("The first message you want to compare.")
+        .setRequired(true)
+    )
+    .addStringOption((option) =>
+      option
+        .setName("message2")
+        .setDescription("The second message you want to compare.")
+        .setRequired(true)
+    ),
   async execute(interaction) {
-    const message1 = interaction.options.getString("message1");
-    const message2 = interaction.options.getString("message2");
+    try {
+      await interaction.deferReply();
 
-    await interaction.reply({ embeds: [diffImage] });
+      const message1 = interaction.options.getString("message1");
+      const message2 = interaction.options.getString("message2");
+
+      const data = {
+        beforeText: message1,
+        afterText: message2,
+      };
+
+      const url = `http://localhost:3000/difference`;
+      const response = await axios.post(url, data);
+
+      const { imageId, imageUrl } = response.data;
+
+      console.log("Image Id:", imageId);
+
+      const attachment = new AttachmentBuilder(imageUrl, {
+        name: `${imageId}.png`,
+      });
+
+      await interaction.editReply({
+        content: "Here is your difference!",
+        files: [attachment],
+      });
+
+      const deleteUrl = `http://localhost:3000/images/${imageId}`;
+      await axios.delete(deleteUrl);
+      console.log(`Deleted image with ID: ${imageId}`);
+    } catch (error) {
+      console.error("Error fetching or sending image:", error);
+    }
   },
 };
